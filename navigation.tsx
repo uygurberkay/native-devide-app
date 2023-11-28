@@ -13,6 +13,10 @@ import PlaceDetails from './screens/PlaceDetails';
 import IconButton from './components/ui/IconButton';
 
 
+import { useCallback, useEffect, useState } from 'react';
+import { init } from './utils/database';
+import * as SplashScreen from 'expo-splash-screen';
+
 
 type NativeStackParamList = {
     AllPlaces: any | undefined;
@@ -23,10 +27,33 @@ type NativeStackParamList = {
 
 const Stack = createNativeStackNavigator<NativeStackParamList>();
 
-
 const Navigation = () => {
+    const [dbInitialized, setDBInitialized] = useState(false);
+
+    useEffect(() => {
+        const prepare = async () => {
+            try {
+                await SplashScreen.preventAutoHideAsync();
+                init();
+            } catch (e) {
+                console.warn(e);
+            } finally {
+                setDBInitialized(true);
+            }
+        }
+        prepare();
+    }, []);
+
+    const onLayoutRootView = useCallback(async () => {
+        if (dbInitialized) {
+            await SplashScreen.hideAsync();
+        }
+    }, [dbInitialized]);
+    
+    if (!dbInitialized) return null;
+    
     return (
-        <NavigationContainer>
+        <NavigationContainer onReady={onLayoutRootView}>
             <Stack.Navigator screenOptions={{
                 headerStyle: { backgroundColor: Colors.primary150 },
                 headerTintColor: Colors.gray700,
@@ -62,7 +89,7 @@ const Navigation = () => {
                     name='PlaceDetails' 
                     component={PlaceDetails} 
                     options={{
-
+                        title: 'Loading Place...'
                     }}/>
             </Stack.Navigator>
         </NavigationContainer>
