@@ -5,18 +5,18 @@ interface PlaceProps {
     location: any
 }
 
-class Place implements PlaceProps {
+export class Place implements PlaceProps {
     title: string;
     imageUri: string;
     address: any;
     location: any;
     id: string;
 
-    constructor(title: string, imageUri: string, address: any, location: any) {
+    constructor(title: string, imageUri: string, location: any) {
         this.title = title;
         this.imageUri = imageUri;
-        this.address = address;
-        this.location = location;
+        this.address = location.address;
+        this.location = { latitude: location.latitude, longitude: location.longitude }; // It could be wrong
         this.id = new Date().toString() + Math.random().toString();
     }
 }

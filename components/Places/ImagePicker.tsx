@@ -5,13 +5,17 @@ import { launchCameraAsync, useCameraPermissions, PermissionStatus } from 'expo-
 import { Colors } from '../../constants/Colors';
 import OutlineButton from '../ui/OutlineButton';
 
-const ImagePicker = () => {
+interface ImagePickerProps {
+    onImageTaken: (imageUri :string) => void;
+}
+
+const ImagePicker = ({onImageTaken}: ImagePickerProps) => {
     const [pickedImage, setPicketImage] = useState<any>();
-    const [cameraPermissionInformation, requestPermisson] = useCameraPermissions();
+    const [cameraPermissionInformation, requestPermission] = useCameraPermissions();
 
     const verifyPermission = async () => {
         if(cameraPermissionInformation?.status === PermissionStatus.UNDETERMINED){
-            const permissionResponse = await requestPermisson()
+            const permissionResponse = await requestPermission()
             return permissionResponse.granted;
         } 
 
@@ -37,6 +41,7 @@ const ImagePicker = () => {
             quality: .5,
         });
         setPicketImage(image?.assets[0].uri)
+        onImageTaken(image?.assets[0].uri)
     }
 
     let imagePreview = <Text>No Image</Text>
@@ -61,7 +66,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',   
         backgroundColor: Colors.primary60,
-        borderRadius: 4,
+        borderRadius: 8,
+        overflow: 'hidden',
     },
     image: {
         width: '100%',

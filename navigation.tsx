@@ -56,8 +56,8 @@ const Navigation = () => {
                     name='Map' 
                     component={Map} 
                     options={{
-
-                    }}/>
+                        title: 'Map'
+                    }}/>    
                 <Stack.Screen 
                     name='PlaceDetails' 
                     component={PlaceDetails} 

@@ -21,6 +21,7 @@ const PlacesList = ({ places }: PlacesListProps) => {
 
     return (
         <FlatList
+            style={styles.list}
             data={places}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => <PlaceItem place={item} onSelect={() => null}/>}
@@ -29,15 +30,18 @@ const PlacesList = ({ places }: PlacesListProps) => {
 }
 
 const styles = StyleSheet.create({
-fallbackContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-},
-fallbackText: {
-    fontSize: 16,
-    color: Colors.primary200,
-},
+    list: {
+        margin: 12,
+    },
+    fallbackContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    fallbackText: {
+        fontSize: 16,
+        color: Colors.primary200,
+    },
 });
 
 export default PlacesList;
